@@ -17,4 +17,32 @@ class ProductViewSet(viewsets.ViewSet):
     def get_queryset(self, id=None):
         if id == None:
             return Products.objects.all()
-        return Products.objects.get(id=id)
+        return Products.objects.get(id=id).first()
+
+    def create(self, request):
+        serializer = ProductSerializer(data = request.data)
+        if serializer.is_valid():
+            serialize.save()
+            message = "The product ${serializer.data.name} has been created succesfuly!"
+            return Response({'data' : serializer.data, 'message' : message}, status = status.HTTP_201_CREATED)
+        return Response(serializer.errors, status= status.HTTP_400_BAD_REQUEST)
+
+    def update(self, request, id):
+        product = Products.objects.filter(id=id).first()
+        serializer = ProductSerializer(product, data = request.data)
+        if serializer.is_valid():
+            serializer.save()
+            message = "The product ${serializer.data.name} has been updated succesfuly!"
+            return Response({'data' : serializer.data, 'message': message}, status = status.HTTP_200_OK)
+        return Responde(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
+    
+    def destroy(self, request, id):
+        product = Products.objects.filter(id=id).first()
+        product.delete()
+        message = "The product has been deleted succesfuly!"
+        return Response({'message': message}, status = status.HTTP_200_OK)
+    
+
+
+
+

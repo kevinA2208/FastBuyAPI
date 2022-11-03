@@ -105,14 +105,15 @@ AUTH_USER_MODEL = 'GlobalApi.User'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
+#Posgres server information
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'marketplaceDB',
-        'USER': 'postgres',
-        'PASSWORD': '12345',
-        'HOST': 'localhost',
-        'PORT': '',
+        'NAME': 'dan1pv05qgk5ie',
+        'USER': 'bnhqjtlmyfhbzo',
+        'PASSWORD': '2b650eb592da0a4bfdc64206539a30aa09c4c47d3d11b93d259361164e22de36',
+        'HOST': 'ec2-44-209-57-4.compute-1.amazonaws.com',
+        'PORT': '5432',
     }
 }
 
