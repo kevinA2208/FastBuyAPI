@@ -1,0 +1,10 @@
+Idea de tienda, Tienda de electrodomesticos, donde el cliente puede registrarse, ingresar y hacer sus compras
+donde tiene envio y carrito de compra la tienda
+
+El usuario pueda solicitar una notificacion si un producto que el quiere no está disponible, y cuando esté disponible
+se le enviará esta notificacion
+
+Modelo de pedidos donde guarde la informacion de la compra y el envio de algo
+
+Metodo de pago tambien
+

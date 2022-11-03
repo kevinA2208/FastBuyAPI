@@ -11,7 +11,7 @@ SECRET_KEY = 'django-insecure-bjz#x-bflyg87))5=_7nt29$rcvfljj9f!p!)*xjzqz)tb%s%8
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['port-8000-python-orange-zoo-usamo489523666.preview.codeanywhere.com']
 
 
 # Application definition
