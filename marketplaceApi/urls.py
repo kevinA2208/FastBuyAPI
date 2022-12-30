@@ -4,5 +4,5 @@ from GlobalApi import routers
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('modulos/', include(routers)),
+    path('modulos/', include('GlobalApi.routers')),
 ]
