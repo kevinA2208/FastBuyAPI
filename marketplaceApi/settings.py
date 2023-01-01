@@ -11,7 +11,7 @@ SECRET_KEY = 'django-insecure-bjz#x-bflyg87))5=_7nt29$rcvfljj9f!p!)*xjzqz)tb%s%8
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1']
 
 
 # Application definition
@@ -105,6 +105,7 @@ AUTH_USER_MODEL = 'GlobalApi.User'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
+#Posgres server information
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -112,7 +113,7 @@ DATABASES = {
         'USER': 'postgres',
         'PASSWORD': '12345',
         'HOST': 'localhost',
-        'PORT': '',
+        'PORT': '5432',
     }
 }
 

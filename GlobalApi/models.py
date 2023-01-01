@@ -51,15 +51,59 @@ class User(AbstractBaseUser):
     def is_staff(self):
         return self.user_type == 'A'
 
+class Client(models.Model):
+    id_client = models.AutoField(primary_key=True)
+    #On delete means that if i delete a client, the user with the same doc as the client i deleted, will be
+    #remove too
+    doc_client = models.ForeignKey('User', on_delete=models.CASCADE, db_column='doc' )
+    name_client = models.CharField(max_length = 50)
+    last_name_client = models.CharField(max_length = 100)
+    email_client = models.EmailField(null = False)
+
+class Admin(models.Model):
+    id_admin = models.AutoField(primary_key=True)
+    doc_admin = models.ForeignKey('User', on_delete=models.CASCADE, db_column='doc' )
+    name_admin = models.CharField(max_length = 50)
+    last_name_admin = models.CharField(max_length = 100)
+    email_admin = models.EmailField(null = False)
 
 class Products(models.Model):
     id = models.AutoField(primary_key=True)
-    name = models.CharField('Nombre del producto', max_length=50)
-    price = models.DecimalField('Precio', max_digits=10, decimal_places=2)
+    name = models.CharField('Product name', max_length=50)
+    price = models.DecimalField('Price', max_digits=10, decimal_places=2)
+    #Stock will show how many ProductUnits objets from an specific product is available (views)
     stock = models.IntegerField('Stock')
-    description = models.TextField('Descripcion', max_length=200)
-    image = models.ImageField('Imagen', upload_to='products', null=True, blank=True)
+    description = models.TextField('Description', max_length=200)
+    image = models.ImageField('Image', upload_to='products', null=True, blank=True)
+    available = models.BooleanField(default = True)
+
 
     def __str__(self):
         return self.name
 
+#This model is the one that manages the units of the products
+class ProductUnits(models.Model):
+    product_unit_id = models.AutoField(primary_key=True)
+    product_id = models.ForeignKey('Products',on_delete = models.CASCADE , db_column = 'id')
+    # S for Selled and A for available | if the unit is selled then the stock decrease
+    product_unit_state = models.CharField(max_length = 10)
+    
+    
+class Order(models.Model):
+    order_id = models.AutoField(primary_key=True)
+    order_client_id = models.ForeignKey('Client', on_delete = models.CASCADE, db_column = 'id_client', default = 0)
+    order_address = models.CharField('Order Address', max_length = 300)
+    order_date = models.DateField(null = True)
+    order_product_units = models.ManyToManyField(ProductUnits)
+    order_active = models.BooleanField(default = True)
+    
+    
+
+""" El cliente desde el front mira un producto, le da al boton de añadir al carrito, si le da
+varias veces añadir al mismo producto, se le stackean varios productos para comprar, el carrito de compras se crea
+desde el front con la información de los productos que el agregó, ademas de el precio total y un boton para pagarlo
+con diferentes metodos de pago, una vez el cliente haga el pago, se borran los productos del carrito, y se crea un
+pedido, este pedido tiene la información de los productos y la información del cliente, la direccion etc, el cliente
+podrá darle a pedido completado para que el pedido cambie de estado de activo a entregado"""
+
+    
