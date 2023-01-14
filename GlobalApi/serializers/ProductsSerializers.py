@@ -1,6 +1,6 @@
 from dataclasses import fields
 from rest_framework import serializers
-from GlobalApi.models import User, Products, Client, ProductUnits
+from GlobalApi.models import User, Products, Client
 
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
@@ -8,8 +8,8 @@ class ProductSerializer(serializers.ModelSerializer):
         fields = '__all__'
         
 
-class ProductUnitsSerializer(serializers.ModelSerializer):
+""" class ProductUnitsSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductUnits
-        fields = '__all__'
+        fields = '__all__' """
         

@@ -67,13 +67,20 @@ class Admin(models.Model):
     last_name_admin = models.CharField(max_length = 100)
     email_admin = models.EmailField(null = False)
 
+
+class Categories(models.Model):
+    id_category = models.AutoField(primary_key=True)
+    name_category = models.CharField(max_length=50, blank=True, null=True)
+
+
 class Products(models.Model):
-    id = models.AutoField(primary_key=True)
+    product_id = models.AutoField(primary_key=True)
     name = models.CharField('Product name', max_length=50)
     price = models.DecimalField('Price', max_digits=10, decimal_places=2)
     #Stock will show how many ProductUnits objets from an specific product is available (views)
     stock = models.IntegerField('Stock')
     description = models.TextField('Description', max_length=200)
+    category = models.ForeignKey('Categories', on_delete=models.CASCADE, db_column='id_category')
     image = models.ImageField('Image', upload_to='products', null=True, blank=True)
     available = models.BooleanField(default = True)
 
@@ -81,12 +88,15 @@ class Products(models.Model):
     def __str__(self):
         return self.name
 
-#This model is the one that manages the units of the products
+
+
+
+""" #This model is the one that manages the units of the products
 class ProductUnits(models.Model):
     product_unit_id = models.AutoField(primary_key=True)
     product_id = models.ForeignKey('Products',on_delete = models.CASCADE , db_column = 'id')
     # S for Selled and A for available | if the unit is selled then the stock decrease
-    product_unit_state = models.CharField(max_length = 10)
+    product_unit_state = models.CharField(max_length = 10) """
     
     
 class Order(models.Model):
@@ -94,7 +104,7 @@ class Order(models.Model):
     order_client_id = models.ForeignKey('Client', on_delete = models.CASCADE, db_column = 'id_client', default = 0)
     order_address = models.CharField('Order Address', max_length = 300)
     order_date = models.DateField(null = True)
-    order_product_units = models.ManyToManyField(ProductUnits)
+    order_products = models.ManyToManyField(Products)
     order_active = models.BooleanField(default = True)
     
     

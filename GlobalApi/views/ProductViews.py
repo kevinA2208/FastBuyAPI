@@ -12,41 +12,42 @@ class ProductViewSet(viewsets.ModelViewSet):
     def get_queryset(self, pk=None):
         if pk == None:
             return Products.objects.all()
-        return Products.objects.filter(id = pk).first()
+        return Products.objects.filter(product_id = pk).first()
 
+    #To create the product the stock needs to be above 0
     def create(self, request):
         serializer = ProductSerializer(data = request.data)
         if serializer.is_valid():
-            if request.data['stock'] < 0:
-                message = "The stock of the product can't be less than 0!"
+            if int(request.data["stock"]) <= 0:
+                message = "The stock of the product can't be 0 or less!"
                 return Response({'message':message}, status = status.HTTP_400_BAD_REQUEST)
             serializer.save()
             message = "The product has been created succesfuly!"
             return Response({'data' : serializer.data, 'message' : message}, status = status.HTTP_201_CREATED)
         return Response(serializer.errors, status= status.HTTP_400_BAD_REQUEST)
 
+    #To update the product the stock can be 0 but it will not be available, cant be less than 0
     def update(self, request, pk):
-        product = Products.objects.filter(id=pk).first()
-        
+        product = Products.objects.filter(product_id=pk).first()
         serializer = ProductSerializer(product, data = request.data)
         if serializer.is_valid():
             #If the stock is 0, the client can't buy that product
-            if request.data['stock'] == 0:
+            if int(request.data['stock']) == 0:
                 serializer.validated_data['available'] = False
                 serializer.save()
                 message = "The product has been updated succesfuly!"
                 return Response({'data' : serializer.data, 'message': message}, status = status.HTTP_200_OK)
-            if request.data['stock'] < 0:
+            if int(request.data['stock']) < 0:
                 message = "The stock of the product can't be less than 0!"
                 return Response({'message':message}, status = status.HTTP_400_BAD_REQUEST)
             serializer.validated_data['available'] = True
             serializer.save()
             message = "The product has been updated succesfuly!"
             return Response({'data' : serializer.data, 'message': message}, status = status.HTTP_200_OK)
-        return Responde(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
     
     def destroy(self, request, pk):
-        product = Products.objects.filter(id=pk).first()
+        product = Products.objects.filter(product_id=pk).first()
         product.delete()
         message = "The product has been deleted succesfuly!"
         return Response({'message': message}, status = status.HTTP_200_OK)
