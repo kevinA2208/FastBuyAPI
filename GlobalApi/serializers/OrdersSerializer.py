@@ -2,7 +2,7 @@ from dataclasses import fields
 from rest_framework import serializers
 from GlobalApi.models import Order
 from GlobalApi.serializers.UsersSerializer import ClientInformationSerializer
-from GlobalApi.serializers.ProductsSerializers import ProductUnitsSerializer
+from GlobalApi.serializers.ProductsSerializer import ProductUnitsSerializer
 
 #Normal serializers for the views
 class OrderSerializer(serializers.ModelSerializer):

@@ -1,7 +1,6 @@
 from rest_framework import serializers
 from GlobalApi.models import Categories
 
-
 class CategoriesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Categories
