@@ -105,8 +105,9 @@ class Order(models.Model):
     order_client_id = models.ForeignKey('Client', on_delete = models.CASCADE, db_column = 'id_client', default = 0)
     order_address = models.CharField('Order Address', max_length = 300)
     order_date = models.DateField(null = True)
-    order_products = models.ManyToManyField(Products)
-    order_active = models.BooleanField(default = True)
+    order_product_units = models.ManyToManyField(ProductUnits)
+    #I for In process, C for completed, D for delivered, if the client pay the order, the order state will change to C and then to delivered
+    order_state = models.CharField(max_length = 10, default = 'I')
     
     
 
