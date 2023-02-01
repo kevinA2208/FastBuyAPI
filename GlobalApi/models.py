@@ -2,44 +2,41 @@ from django.db import models
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
 
 class UserManager(BaseUserManager):
-    def create_user(self, email, doc, name,password=None):
+    def create_user(self, doc, username,password=None):
         if not doc:
             raise ValueError('The user must have a document')
 
         user = self.model(
             doc = doc,
-            email = self.normalize_email(email),
-            name=name,
+            username=username,
         )
 
         user.set_password(password)
         user.save()
         return user
 
-    def create_superuser(self, email, doc, name, password):
+    def create_superuser(self, doc, username, password):
         user = self.create_user(
-            email,
             doc = doc,
-            name=name,
+            username=username,
             password=password,
         )
-        user.user_type = 'A'
+        user.is_staff = True
         user.save()
         return user
 
+
 class User(AbstractBaseUser):
     doc = models.CharField('Numero de documento', unique=True, max_length=20, primary_key=True)
-    name = models.CharField('Nombre de usuario', max_length=50, blank=True, null=True)
-    email = models.CharField('Email',max_length=60, blank=True, null=True)
-    user_active = models.BooleanField(default = True)
-    user_type = models.CharField('Tipo usuario', max_length=1)
-    #[A (Admin) C (Client)]
+    username = models.CharField('Nombre de usuario', max_length=50, blank=True, null=True)
+    is_staff = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
     objects = UserManager()
     USERNAME_FIELD = 'doc'
-    REQUIRED_FIELDS = ['email', 'name']
+    REQUIRED_FIELDS = ['username']
 
     def __str__(self):
-        return f'{self.name},  doc: {self.doc}'
+        return f'{self.username},  doc: {self.doc}'
 
     def has_perm(self,perm,obj = None):
         return True
@@ -47,9 +44,6 @@ class User(AbstractBaseUser):
     def has_module_perms(self, app_label):
         return True
 
-    @property
-    def is_staff(self):
-        return self.user_type == 'A'
 
 class Client(models.Model):
     id_client = models.AutoField(primary_key=True)
@@ -60,12 +54,6 @@ class Client(models.Model):
     last_name_client = models.CharField(max_length = 100)
     email_client = models.EmailField(null = False)
 
-class Admin(models.Model):
-    id_admin = models.AutoField(primary_key=True)
-    doc_admin = models.ForeignKey('User', on_delete=models.CASCADE, db_column='doc' )
-    name_admin = models.CharField(max_length = 50)
-    last_name_admin = models.CharField(max_length = 100)
-    email_admin = models.EmailField(null = False)
 
 
 class Categories(models.Model):

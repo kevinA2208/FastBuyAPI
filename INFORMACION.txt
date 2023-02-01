@@ -1,0 +1,14 @@
+
+
+ESQUELETO PARA CREAR UN CLIENTE Y SU USUARIO A LA VEZ
+{
+    "name_client": "",
+    "last_name_client": "",
+    "email_client": "",
+    "doc_client": {
+           "doc": "",
+           "username": "",
+           "password": ""
+    }
+}
+

@@ -3,7 +3,7 @@ from rest_framework import status, filters
 from rest_framework.response import Response
 from rest_framework import viewsets
 from GlobalApi.models import Products, ProductUnits
-from GlobalApi.serializers.ProductsSerializer import ProductSerializer, ProductsWithStockUnitsSerializer, ProductUnitsSerializer
+from GlobalApi.serializers.ProductsSerializer import ProductSerializer, ProductsWithStockUnitsSerializer, ProductUnitsSerializer, ProductUnitsListSerializer
 from datetime import timedelta, date
 from apscheduler.schedulers.background import BackgroundScheduler
 
@@ -70,6 +70,34 @@ class ProductViewSet(viewsets.ModelViewSet):
         product_units = product_units.delete()
         message = "The product and the product units has been deleted succesfuly!"
         return Response({'message': message}, status = status.HTTP_200_OK)
+
+class ProductUnitViewSet(viewsets.ModelViewSet):
+    serializer_class = ProductUnitsListSerializer
+
+    def get_queryset(self, pk=None):
+        if pk == None:
+            return ProductUnits.objects.all()
+        return ProductUnits.objects.filter(product_unit_id = pk).first()
+
+    def create(self, request):
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'data' : serializer.data, 'message':'Product Unit created succesfuly!'}, status= status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    def update(self, request, pk):
+        product_unit = ProductUnits.objects.filter(product_unit_id = pk).first()
+        serializer = self.serializer_class(product_unit, data = request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'data' : serializer.data, 'message':'Product Unit updated succesfuly!'}, status= status.HTTP_200_OK)
+        return Response(serializer.errors, status= status.HTTP_400_BAD_REQUEST)
+
+    def destroy(self, request, pk):
+        product_unit = ProductUnits.objects.filter(product_unit_id = pk).first()
+        product_unit.delete()
+        return Response({'message':'Product Unit deleted succesfuly!'}, status= status.HTTP_200_OK)
 
 
     #Validation of the product units sold for the product stock, if a product unit is sold, the stock of the product will be updated
