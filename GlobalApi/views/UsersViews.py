@@ -3,9 +3,10 @@ from rest_framework.response import Response
 from rest_framework import viewsets
 from GlobalApi.models import User, Client
 from GlobalApi.serializers.UsersSerializer import UserSerializer, ClientSerializer, ClientInformationSerializer
+from GlobalApi.authentication.authentication_mixins import Authentication
 
 
-class UserViewSet(viewsets.ModelViewSet):
+class UserViewSet(Authentication, viewsets.ModelViewSet):
     serializer_class = UserSerializer
     def get_queryset(self, pk=None):
         if pk == None:
@@ -35,7 +36,7 @@ class UserViewSet(viewsets.ModelViewSet):
         return Response({'message':'User deleted succesfuly!'}, status= status.HTTP_200_OK)
 
 
-class ClientViewSet(viewsets.ModelViewSet):
+class ClientViewSet(Authentication, viewsets.ModelViewSet):
     serializer_class = ClientInformationSerializer
 
     def get_queryset(self, pk=None):

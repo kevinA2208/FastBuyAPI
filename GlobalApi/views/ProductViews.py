@@ -6,10 +6,11 @@ from GlobalApi.models import Products, ProductUnits
 from GlobalApi.serializers.ProductsSerializer import ProductSerializer, ProductsWithStockUnitsSerializer, ProductUnitsSerializer, ProductUnitsListSerializer
 from datetime import timedelta, date
 from apscheduler.schedulers.background import BackgroundScheduler
+from GlobalApi.authentication.authentication_mixins import Authentication
 
 scheduler = BackgroundScheduler({'apscheduler.job_defaults.max_instances': 1})
 
-class ProductViewSet(viewsets.ModelViewSet):
+class ProductViewSet(Authentication, viewsets.ModelViewSet):
     serializer_class = ProductSerializer
     def get_queryset(self, pk=None):
         if pk == None:
@@ -71,7 +72,7 @@ class ProductViewSet(viewsets.ModelViewSet):
         message = "The product and the product units has been deleted succesfuly!"
         return Response({'message': message}, status = status.HTTP_200_OK)
 
-class ProductUnitViewSet(viewsets.ModelViewSet):
+class ProductUnitViewSet(Authentication, viewsets.ModelViewSet):
     serializer_class = ProductUnitsListSerializer
 
     def get_queryset(self, pk=None):

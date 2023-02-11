@@ -103,6 +103,8 @@ USE_TZ = True
 
 AUTH_USER_MODEL = 'GlobalApi.User'
 
+TOKEN_EXPIRED_AFTER_SECONDS = 3600
+
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 

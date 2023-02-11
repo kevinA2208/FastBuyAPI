@@ -3,9 +3,10 @@ from rest_framework.response import Response
 from rest_framework import viewsets
 from GlobalApi.models import Categories
 from GlobalApi.serializers.CategoriesSerializer import CategoriesSerializer
+from GlobalApi.authentication.authentication_mixins import Authentication
 
 
-class CategoriesViewSet(viewsets.ModelViewSet):
+class CategoriesViewSet(Authentication, viewsets.ModelViewSet):
     serializer_class = CategoriesSerializer
     def get_queryset(self, id=None):
         if id == None:

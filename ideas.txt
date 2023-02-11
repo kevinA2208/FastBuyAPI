@@ -8,3 +8,6 @@ Modelo de pedidos donde guarde la informacion de la compra y el envio de algo
 
 Metodo de pago tambien
 
+El cliente puede ver todos los productos, puede ver la información de el mismo, y puede ver sus ordenes, pero las de los demas no
+El admin puede ver todo en la plataforma
+

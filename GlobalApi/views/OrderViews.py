@@ -4,8 +4,9 @@ from rest_framework import viewsets
 from GlobalApi.models import Order
 from GlobalApi.serializers.OrdersSerializer import OrderSerializer, ListOrderSerializer
 from datetime import date
+from GlobalApi.authentication.authentication_mixins import Authentication
 
-class OrderViewSet(viewsets.ModelViewSet):
+class OrderViewSet(Authentication, viewsets.ModelViewSet):
     serializer_class = OrderSerializer
     def get_queryset(self, id=None):
         if id == None:
